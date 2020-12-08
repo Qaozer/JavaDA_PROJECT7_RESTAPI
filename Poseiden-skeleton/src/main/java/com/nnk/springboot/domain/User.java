@@ -9,12 +9,16 @@ public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
+    @Column(length = 125)
     @NotBlank(message = "Username is mandatory")
     private String username;
+    @Column(length = 125)
     @NotBlank(message = "Password is mandatory")
     private String password;
+    @Column(length = 125)
     @NotBlank(message = "FullName is mandatory")
     private String fullname;
+    @Column(length = 125)
     @NotBlank(message = "Role is mandatory")
     private String role;
 
