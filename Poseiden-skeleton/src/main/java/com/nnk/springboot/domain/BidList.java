@@ -1,6 +1,7 @@
 package com.nnk.springboot.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
 
 @Entity
@@ -12,9 +13,11 @@ public class BidList {
     private int bidListId;
 
     @Column(nullable = false, length = 30)
+    @NotBlank(message = "Account is mandatory")
     private String account;
 
     @Column(nullable = false, length = 30)
+    @NotBlank(message = "Type is mandatory")
     private String type;
 
     private double bidQuantity;
