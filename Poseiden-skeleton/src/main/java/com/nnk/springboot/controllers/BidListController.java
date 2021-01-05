@@ -9,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -21,9 +20,7 @@ public class BidListController {
     @RequestMapping("/bidList/list")
     public String home(Model model)
     {
-        // TODO: call service find all bids to show to the view
-        List<BidList> bidList = bidListService.findAll();
-        model.addAllAttributes(bidList);
+        model.addAttribute("bids", bidListService.findAll());
         return "bidList/list";
     }
 
@@ -34,11 +31,11 @@ public class BidListController {
 
     @PostMapping("/bidList/validate")
     public String validate(@Valid BidList bid, BindingResult result, Model model) {
-        // TODO: check data valid and save to db, after saving return bid list
         if (result.hasErrors()){
             return "/bidList/add";
         }
         bidListService.saveBid(bid);
+        model.addAttribute("bids", bidListService.findAll());
         return "redirect:/bidList/list";
     }
 
@@ -47,7 +44,7 @@ public class BidListController {
         // TODO: get Bid by Id and to model then show to the form
         Optional<BidList> bid = bidListService.findById(id);
         if(bid.isPresent()){
-            model.addAttribute("bid", bid.get());
+            model.addAttribute("bidList", bid.get());
         }
         return "bidList/update";
     }
@@ -55,14 +52,15 @@ public class BidListController {
     @PostMapping("/bidList/update/{id}")
     public String updateBid(@PathVariable("id") Integer id, @Valid BidList bidList,
                              BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update Bid and return list Bid
         if(!result.hasErrors()){
             Optional<BidList> bid = bidListService.findById(id);
             if(bid.isPresent()){
                 bidListService.updateBid(bid.get(),bidList);
             }
+            return "redirect:/bidList/list";
+        } else {
+            return "/bidList/update";
         }
-        return "redirect:/bidList/list";
     }
 
     @GetMapping("/bidList/delete/{id}")

@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 public class BidList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TradeId")
+    @Column(name = "BidListId")
     private int bidListId;
 
     @Column(nullable = false, length = 30)
