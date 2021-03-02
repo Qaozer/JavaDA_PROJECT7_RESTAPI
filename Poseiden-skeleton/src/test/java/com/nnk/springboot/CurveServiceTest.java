@@ -31,25 +31,22 @@ public class CurveServiceTest {
         assertEquals(curvePoint.getCurveId(), inDB.getCurveId());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void findByIdTest(){
-        assertTrue(curveService.findAll().isEmpty());
-
         CurvePoint  curvePoint = new CurvePoint(10, 10d, 30d);
 
         curvePoint = curveService.save(curvePoint);
-        assertNotNull(curveService.findById(curvePoint.getCurveId()));
-        curveService.findById(42);
+        assertNotNull(curveService.findById(curvePoint.getId()));
     }
 
     @Test
     public void findAllTest(){
-        assertTrue(curveService.findAll().isEmpty());
+        int count = curveService.findAll().size();
 
         CurvePoint  curvePoint = new CurvePoint(10, 10d, 30d);
 
         curvePoint = curveService.save(curvePoint);
-        assertFalse(curveService.findAll().isEmpty());
+        assertTrue(curveService.findAll().size() == count + 1);
     }
 
     @Test
@@ -71,12 +68,13 @@ public class CurveServiceTest {
     @Test
     public void deleteCurveTest(){
         CurvePoint  curvePoint = new CurvePoint(10, 10d, 30d);
+        int count = curveService.findAll().size();
         curvePoint = curveService.save(curvePoint);
 
-        assertFalse(curveService.findAll().isEmpty());
+        assertTrue(curveService.findAll().size() == count + 1);
 
         curveService.delete(curvePoint);
 
-        assertTrue(curveService.findAll().isEmpty());
+        assertTrue(curveService.findAll().size() == count);
     }
 }
