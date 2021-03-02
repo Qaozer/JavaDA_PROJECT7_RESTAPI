@@ -24,6 +24,9 @@ public class Rating {
 
     private int orderNumber;
 
+    public Rating() {
+    }
+
     public Rating(String moodysRating, String sandPRating, String fitchRating, int orderNumber) {
         this.moodysRating = moodysRating;
         this.sandPRating = sandPRating;

@@ -1,6 +1,7 @@
 package com.nnk.springboot.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
 
 @Entity
@@ -8,13 +9,15 @@ import java.sql.Timestamp;
 public class BidList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TradeId")
+    @Column(name = "BidListId")
     private int bidListId;
 
     @Column(nullable = false, length = 30)
+    @NotBlank(message = "Account is mandatory")
     private String account;
 
     @Column(nullable = false, length = 30)
+    @NotBlank(message = "Type is mandatory")
     private String type;
 
     private double bidQuantity;
@@ -71,6 +74,9 @@ public class BidList {
         this.account = account;
         this.type = type;
         this.bidQuantity = bidQuantity;
+    }
+
+    public BidList() {
     }
 
     public int getBidListId() {
