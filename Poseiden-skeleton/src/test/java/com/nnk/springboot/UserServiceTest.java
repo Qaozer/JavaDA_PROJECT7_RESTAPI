@@ -75,6 +75,6 @@ public class UserServiceTest {
 
         userService.delete(user.getId());
 
-        assertTrue(userService.findAll().size() == count);
+        assertEquals(count, userService.findAll().size());
     }
 }
