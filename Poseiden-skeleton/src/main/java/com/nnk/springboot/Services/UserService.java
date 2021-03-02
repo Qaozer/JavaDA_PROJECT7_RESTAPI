@@ -5,15 +5,18 @@ import com.nnk.springboot.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Transactional(readOnly=true)
     public List<User> findAll(){
         return userRepository.findAll();
     }
@@ -24,10 +27,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Transactional(readOnly=true)
     public Optional<User> findById(int id){
         return userRepository.findById(id);
     }
 
+    @Transactional(readOnly=true)
     public Optional<User> findByUsername(String username){
         return userRepository.findByUsername(username);
     }

@@ -4,20 +4,24 @@ import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.repositories.RuleNameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class RuleNameService {
     @Autowired
     private RuleNameRepository ruleNameRepository;
 
+    @Transactional(readOnly=true)
     public List<RuleName> findAll(){ return ruleNameRepository.findAll();}
 
     public RuleName save(RuleName ruleName){
         return ruleNameRepository.save(ruleName);
     }
 
+    @Transactional(readOnly=true)
     public RuleName findById(int id){
         return ruleNameRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid ruleName Id:" + id));
     }
