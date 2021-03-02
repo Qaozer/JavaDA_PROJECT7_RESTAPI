@@ -33,23 +33,20 @@ public class BidServiceTest {
 
     @Test
     public void findByIdTest(){
-        assertTrue(bidListService.findAll().isEmpty());
-
         BidList  bid = new BidList("Account Test", "Type Test", 10d);
 
         bid = bidListService.saveBid(bid);
         assertTrue(bidListService.findById(bid.getBidListId()).isPresent());
-        assertFalse(bidListService.findById(42).isPresent());
     }
 
     @Test
     public void findAllTest(){
-        assertTrue(bidListService.findAll().isEmpty());
+        int count = bidListService.findAll().size();
 
         BidList  bid = new BidList("Account Test", "Type Test", 10d);
 
         bid = bidListService.saveBid(bid);
-        assertFalse(bidListService.findAll().isEmpty());
+        assertTrue(bidListService.findAll().size() == count + 1);
     }
 
     @Test
@@ -70,13 +67,14 @@ public class BidServiceTest {
 
     @Test
     public void deleteBidTest(){
+        int count = bidListService.findAll().size();
         BidList  bid = new BidList("Account Test", "Type Test", 10d);
         bid = bidListService.saveBid(bid);
 
-        assertFalse(bidListService.findAll().isEmpty());
+        assertTrue(bidListService.findAll().size() == count + 1);
 
         bidListService.deleteById(bid.getBidListId());
 
-        assertTrue(bidListService.findAll().isEmpty());
+        assertTrue(bidListService.findAll().size() == count);
     }
 }
