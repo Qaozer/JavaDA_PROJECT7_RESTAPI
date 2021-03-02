@@ -66,6 +66,9 @@ public class Trade {
     @Column(length = 125)
     private String side;
 
+    public Trade() {
+    }
+
     public Trade(String account, String type) {
         this.account = account;
         this.type = type;
