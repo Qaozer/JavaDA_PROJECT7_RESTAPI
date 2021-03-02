@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertTrue;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -46,7 +45,7 @@ public class CurveServiceTest {
         CurvePoint  curvePoint = new CurvePoint(10, 10d, 30d);
 
         curvePoint = curveService.save(curvePoint);
-        assertTrue(curveService.findAll().size() == count + 1);
+        assertEquals( count + 1, curveService.findAll().size());
     }
 
     @Test
@@ -71,10 +70,10 @@ public class CurveServiceTest {
         int count = curveService.findAll().size();
         curvePoint = curveService.save(curvePoint);
 
-        assertTrue(curveService.findAll().size() == count + 1);
+        assertEquals( count + 1, curveService.findAll().size());
 
         curveService.delete(curvePoint);
 
-        assertTrue(curveService.findAll().size() == count);
+        assertEquals( count, curveService.findAll().size());
     }
 }

@@ -9,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import org.junit.jupiter.api.Assertions;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertTrue;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -50,7 +48,7 @@ public class RatingServiceTest {
         Rating  rating = new Rating("Moodys Rating", "Sand PRating", "Fitch Rating", 10);
 
         rating = ratingService.save(rating);
-        assertTrue(ratingService.findAll().size() == count + 1);
+        assertEquals(count + 1, ratingService.findAll().size());
     }
 
     @Test
@@ -76,9 +74,9 @@ public class RatingServiceTest {
         Rating  rating = new Rating("Moodys Rating", "Sand PRating", "Fitch Rating", 10);
         rating = ratingService.save(rating);
 
-        assertTrue(ratingService.findAll().size() == count + 1);
+        assertEquals(count + 1, ratingService.findAll().size());
         ratingService.delete(rating.getId());
 
-        assertTrue(ratingService.findAll().size() == count);
+        assertEquals(count, ratingService.findAll().size());
     }
 }

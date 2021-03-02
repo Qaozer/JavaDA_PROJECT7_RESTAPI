@@ -11,7 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertFalse;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -46,7 +45,7 @@ public class BidServiceTest {
         BidList  bid = new BidList("Account Test", "Type Test", 10d);
 
         bid = bidListService.saveBid(bid);
-        assertTrue(bidListService.findAll().size() == count + 1);
+        assertEquals(count + 1, bidListService.findAll().size());
     }
 
     @Test
@@ -71,10 +70,10 @@ public class BidServiceTest {
         BidList  bid = new BidList("Account Test", "Type Test", 10d);
         bid = bidListService.saveBid(bid);
 
-        assertTrue(bidListService.findAll().size() == count + 1);
+        assertEquals(count + 1, bidListService.findAll().size());
 
         bidListService.deleteById(bid.getBidListId());
 
-        assertTrue(bidListService.findAll().size() == count);
+        assertEquals(count, bidListService.findAll().size());
     }
 }
