@@ -4,14 +4,17 @@ import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.repositories.CurvePointRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class CurveService {
     @Autowired
     private CurvePointRepository curvePointRepository;
 
+    @Transactional(readOnly=true)
     public List<CurvePoint> findAll(){
         return curvePointRepository.findAll();
     }
@@ -20,6 +23,7 @@ public class CurveService {
         return curvePointRepository.save(curvePoint);
     }
 
+    @Transactional(readOnly=true)
     public CurvePoint findById(int id){
         return curvePointRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid curvePoint Id:" + id));
     }
