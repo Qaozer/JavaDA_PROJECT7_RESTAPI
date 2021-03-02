@@ -76,6 +76,9 @@ public class BidList {
         this.bidQuantity = bidQuantity;
     }
 
+    public BidList() {
+    }
+
     public int getBidListId() {
         return bidListId;
     }

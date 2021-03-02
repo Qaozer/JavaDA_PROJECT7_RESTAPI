@@ -28,7 +28,7 @@ public class BidListService {
     public BidList updateBid(BidList bid, BidList update){
         bid.setAccount(update.getAccount());
         bid.setType(update.getType());
-        update.setBid(update.getBid());
+        bid.setBidQuantity(update.getBidQuantity());
         return bidListRepository.save(bid);
     }
 

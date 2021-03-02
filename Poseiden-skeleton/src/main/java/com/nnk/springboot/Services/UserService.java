@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -23,8 +24,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User findById(int id){
-        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+    public Optional<User> findById(int id){
+        return userRepository.findById(id);
+    }
+
+    public Optional<User> findByUsername(String username){
+        return userRepository.findByUsername(username);
     }
 
     public User update(User user, int id){
@@ -35,7 +40,9 @@ public class UserService {
     }
 
     public void delete(int id){
-        User user = this.findById(id);
-        userRepository.delete(user);
+        Optional<User> opt = this.findById(id);
+        if(opt.isPresent()){
+            userRepository.delete(opt.get());
+        }
     }
 }
