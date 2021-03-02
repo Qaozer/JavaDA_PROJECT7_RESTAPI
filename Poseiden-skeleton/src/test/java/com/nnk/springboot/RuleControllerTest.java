@@ -1,5 +1,8 @@
 package com.nnk.springboot;
 
+import com.nnk.springboot.Services.RuleNameService;
+import com.nnk.springboot.domain.RuleName;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -20,6 +25,9 @@ public class RuleControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+    
+    @Autowired
+    private RuleNameService ruleNameService;
 
     @WithMockUser(authorities = "ADMIN")
     @Test
@@ -70,4 +78,38 @@ public class RuleControllerTest {
                 .param("sqlPart", "sqlPart")
         ).andExpect(status().isForbidden());
     }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Transactional
+    @Test
+    public void testShowUpdateBidListAdmin() throws Exception{
+        RuleName ruleName = ruleNameService.save(new RuleName("name", "description", "json", "template", "sqlStr", "sqlPart"));
+
+        this.mockMvc.perform(get("/ruleName/update/"+ruleName.getId()))
+                .andExpect(model().attribute("ruleName", Matchers.hasProperty("name",Matchers.equalTo("name"))))
+                .andExpect(model().attribute("ruleName", Matchers.hasProperty("description",Matchers.equalTo("description"))))
+                .andExpect(model().attribute("ruleName", Matchers.hasProperty("json",Matchers.equalTo("json"))))
+                .andExpect(model().attribute("ruleName", Matchers.hasProperty("template",Matchers.equalTo("template"))))
+                .andExpect(model().attribute("ruleName", Matchers.hasProperty("sqlStr",Matchers.equalTo("sqlStr"))))
+                .andExpect(model().attribute("ruleName", Matchers.hasProperty("sqlPart",Matchers.equalTo("sqlPart"))));
+    }
+
+    @WithMockUser
+    @Transactional
+    @Test
+    public void testShowUpdateBidList() throws Exception{
+        RuleName ruleName = ruleNameService.save(new RuleName("name", "description", "json", "template", "sqlStr", "sqlPart"));
+
+        this.mockMvc.perform(get("/ruleName/update/"+ruleName.getId())).andExpect(status().isForbidden());
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Transactional
+    @Test
+    public void testDeleteBidListAdmin() throws Exception{
+        RuleName ruleName = ruleNameService.save(new RuleName("name", "description", "json", "template", "sqlStr", "sqlPart"));
+
+        this.mockMvc.perform(get("/ruleName/delete/"+ruleName.getId())).andExpect(status().isFound()).andReturn();
+    }
+
 }

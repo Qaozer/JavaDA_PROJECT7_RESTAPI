@@ -1,5 +1,8 @@
 package com.nnk.springboot;
 
+import com.nnk.springboot.Services.TradeService;
+import com.nnk.springboot.domain.Trade;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -20,6 +25,9 @@ public class TradeControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+    
+    @Autowired
+    private TradeService tradeService;
 
     @WithMockUser(authorities = "ADMIN")
     @Test
@@ -63,5 +71,35 @@ public class TradeControllerTest {
                 .param("type", "type")
                 .param("buyQuantity", "10.0")
         ).andExpect(status().isForbidden());
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Transactional
+    @Test
+    public void testShowUpdateTradeAdmin() throws Exception{
+        Trade trade = tradeService.save(new Trade("Account", "Type", 10.0d));
+
+        this.mockMvc.perform(get("/trade/update/"+trade.getTradeId()))
+                .andExpect(model().attribute("trade", Matchers.hasProperty("account",Matchers.equalTo("Account"))))
+                .andExpect(model().attribute("trade", Matchers.hasProperty("type",Matchers.equalTo("Type"))))
+                .andExpect(model().attribute("trade", Matchers.hasProperty("buyQuantity",Matchers.equalTo(10.0d))));
+    }
+
+    @WithMockUser
+    @Transactional
+    @Test
+    public void testShowUpdateTrade() throws Exception{
+        Trade trade = tradeService.save(new Trade("Account", "Type", 10.0d));
+
+        this.mockMvc.perform(get("/trade/update/"+trade.getTradeId())).andExpect(status().isForbidden());
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Transactional
+    @Test
+    public void testDeleteTradeAdmin() throws Exception{
+        Trade trade = tradeService.save(new Trade("Account", "Type", 10.0d));
+
+        this.mockMvc.perform(get("/trade/delete/"+trade.getTradeId())).andExpect(status().isFound()).andReturn();
     }
 }
