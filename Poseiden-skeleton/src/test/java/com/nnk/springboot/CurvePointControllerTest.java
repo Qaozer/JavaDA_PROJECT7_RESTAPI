@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -70,6 +71,7 @@ public class CurvePointControllerTest {
                 .param("curveId","90")
                 .param("term", "A")
                 .param("value", "B")
+                .with(csrf())
         ).andExpect(model().hasErrors());
     }
 
@@ -80,6 +82,7 @@ public class CurvePointControllerTest {
                 .param("curveId","90")
                 .param("term", "10.0")
                 .param("value", "10.0")
+                .with(csrf())
         ).andExpect(status().isForbidden());
     }
 
@@ -112,7 +115,9 @@ public class CurvePointControllerTest {
         this.mockMvc.perform(post("/curvePoint/update/"+curvePoint.getId())
                 .param("curveId","91")
                 .param("term","12.0")
-                .param("value","12.0")).andExpect(redirectedUrl("/curvePoint/list"));
+                .param("value","12.0")
+                .with(csrf())
+        ).andExpect(redirectedUrl("/curvePoint/list"));
     }
 
     @WithMockUser(authorities = "ADMIN")
@@ -123,7 +128,9 @@ public class CurvePointControllerTest {
         this.mockMvc.perform(post("/curvePoint/update/"+curvePoint.getId())
                 .param("curveId","91")
                 .param("term","12.0")
-                .param("value","A")).andExpect(model().hasErrors());
+                .param("value","A")
+                .with(csrf())
+        ).andExpect(model().hasErrors());
     }
 
     @WithMockUser(authorities = "ADMIN")

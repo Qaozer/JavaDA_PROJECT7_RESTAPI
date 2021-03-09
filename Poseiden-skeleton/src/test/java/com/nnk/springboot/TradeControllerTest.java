@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -60,6 +61,7 @@ public class TradeControllerTest {
                 .param("account","account")
                 .param("type", "type")
                 .param("buyQuantity", "10.0")
+                .with(csrf())
         ).andExpect(redirectedUrl("/trade/list"));
     }
 
@@ -69,6 +71,7 @@ public class TradeControllerTest {
         this.mockMvc.perform(post("/trade/validate")
                 .param("type", "type")
                 .param("buyQuantity", "10.0")
+                .with(csrf())
         ).andExpect(model().hasErrors());
     }
 
@@ -79,6 +82,7 @@ public class TradeControllerTest {
                 .param("account","account")
                 .param("type", "type")
                 .param("buyQuantity", "10.0")
+                .with(csrf())
         ).andExpect(status().isForbidden());
     }
 
@@ -111,7 +115,9 @@ public class TradeControllerTest {
         this.mockMvc.perform(post("/trade/update/"+trade.getTradeId())
                 .param("account","account")
                 .param("type", "type")
-                .param("buyQuantity", "10.0")).andExpect(redirectedUrl("/trade/list"));
+                .param("buyQuantity", "10.0")
+                .with(csrf())
+        ).andExpect(redirectedUrl("/trade/list"));
     }
 
     @WithMockUser(authorities = "ADMIN")
@@ -122,7 +128,9 @@ public class TradeControllerTest {
         this.mockMvc.perform(post("/trade/update/"+trade.getTradeId())
                 .param("account","account")
                 .param("type", "type")
-                .param("buyQuantity", "A.0")).andExpect(model().hasErrors());
+                .param("buyQuantity", "A.0")
+                .with(csrf())
+        ).andExpect(model().hasErrors());
     }
     
 

@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -59,6 +60,7 @@ public class BidControllerTests {
                .param("account","account")
                .param("type", "type")
                .param("bidQuantity", "1")
+               .with(csrf())
        ).andExpect(redirectedUrl("/bidList/list"));
     }
 
@@ -70,6 +72,7 @@ public class BidControllerTests {
                 .param("account","account")
                 .param("type", "type")
                 .param("bidQuantity", "B")
+                .with(csrf())
         ).andExpect(model().hasErrors());
     }
 
@@ -80,6 +83,7 @@ public class BidControllerTests {
                .param("account","account")
                .param("type", "type")
                .param("bidQuantity", "1")
+               .with(csrf())
        ).andExpect(status().isForbidden());
     }
 
@@ -112,7 +116,9 @@ public class BidControllerTests {
         this.mockMvc.perform(post("/bidList/update/"+bid.getBidListId())
                 .param("account","nuAccount")
                 .param("type","nuType")
-                .param("bidQuantity","12.0")).andExpect(redirectedUrl("/bidList/list"));
+                .param("bidQuantity","12.0")
+                .with(csrf())
+        ).andExpect(redirectedUrl("/bidList/list"));
     }
 
     @WithMockUser(authorities = "ADMIN")
@@ -123,7 +129,9 @@ public class BidControllerTests {
         this.mockMvc.perform(post("/bidList/update/"+bid.getBidListId())
                 .param("account","nuAccount")
                 .param("type","nuType")
-                .param("bidQuantity","A.0")).andExpect(model().hasErrors());
+                .param("bidQuantity","A.0")
+                .with(csrf())
+        ).andExpect(model().hasErrors());
     }
 
     @WithMockUser(authorities = "ADMIN")

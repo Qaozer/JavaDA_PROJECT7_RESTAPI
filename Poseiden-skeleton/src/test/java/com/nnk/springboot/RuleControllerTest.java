@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -63,6 +64,7 @@ public class RuleControllerTest {
                 .param("template", "template")
                 .param("sqlStr", "sqlStr")
                 .param("sqlPart", "sqlPart")
+                .with(csrf())
         ).andExpect(redirectedUrl("/ruleName/list"));
     }
 
@@ -75,6 +77,7 @@ public class RuleControllerTest {
                 .param("template", "template")
                 .param("sqlStr", "sqlStr")
                 .param("sqlPart", "sqlPart")
+                .with(csrf())
         ).andExpect(model().hasErrors());
     }
 
@@ -88,6 +91,7 @@ public class RuleControllerTest {
                 .param("template", "template")
                 .param("sqlStr", "sqlStr")
                 .param("sqlPart", "sqlPart")
+                .with(csrf())
         ).andExpect(status().isForbidden());
     }
 
@@ -127,7 +131,9 @@ public class RuleControllerTest {
                 .param("json", "json")
                 .param("template", "template")
                 .param("sqlStr", "sqlStr")
-                .param("sqlPart", "sqlPart")).andExpect(redirectedUrl("/ruleName/list"));
+                .param("sqlPart", "sqlPart")
+                .with(csrf())
+        ).andExpect(redirectedUrl("/ruleName/list"));
     }
 
     @WithMockUser(authorities = "ADMIN")
@@ -140,7 +146,9 @@ public class RuleControllerTest {
                 .param("json", "json")
                 .param("template", "template")
                 .param("sqlStr", "sqlStr")
-                .param("sqlPart", "sqlPart")).andExpect(model().hasErrors());
+                .param("sqlPart", "sqlPart")
+                .with(csrf())
+        ).andExpect(model().hasErrors());
     }
 
     @WithMockUser(authorities = "ADMIN")

@@ -20,7 +20,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().ignoringAntMatchers("/bidList/**","/curvePoint/**", "/trade/**","/rating/**","/ruleName/**", "/user/update/**", "/user/validate");
         http.authorizeRequests().antMatchers("/", "/login", "/user/list").permitAll();
 
         // If no login, it will redirect to /login page.

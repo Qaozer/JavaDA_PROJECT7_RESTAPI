@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -61,6 +62,7 @@ public class RatingControllerTest {
                 .param("sandPRating", "sandPRating")
                 .param("fitchRating", "fitchRating")
                 .param("orderNumber", "1")
+                .with(csrf())
         ).andExpect(redirectedUrl("/rating/list"));
     }
 
@@ -71,6 +73,7 @@ public class RatingControllerTest {
                 .param("sandPRating", "sandPRating")
                 .param("fitchRating", "fitchRating")
                 .param("orderNumber", "1")
+                .with(csrf())
         ).andExpect(model().hasErrors());
     }
 
@@ -82,6 +85,7 @@ public class RatingControllerTest {
                 .param("sandPRating", "sandPRating")
                 .param("fitchRating", "fitchRating")
                 .param("orderNumber", "1")
+                .with(csrf())
         ).andExpect(status().isForbidden());
     }
 
@@ -116,7 +120,9 @@ public class RatingControllerTest {
                 .param("moodysRating","moodysRating")
                 .param("sandPRating", "sandPRating")
                 .param("fitchRating", "fitchRating")
-                .param("orderNumber", "1")).andExpect(redirectedUrl("/rating/list"));
+                .param("orderNumber", "1")
+                .with(csrf())
+        ).andExpect(redirectedUrl("/rating/list"));
     }
 
     @WithMockUser(authorities = "ADMIN")
@@ -127,7 +133,9 @@ public class RatingControllerTest {
         this.mockMvc.perform(post("/rating/update/"+rating.getId())
                 .param("sandPRating", "sandPRating")
                 .param("fitchRating", "fitchRating")
-                .param("orderNumber", "1")).andExpect(model().hasErrors());
+                .param("orderNumber", "1")
+                .with(csrf())
+        ).andExpect(model().hasErrors());
     }
 
     @WithMockUser(authorities = "ADMIN")

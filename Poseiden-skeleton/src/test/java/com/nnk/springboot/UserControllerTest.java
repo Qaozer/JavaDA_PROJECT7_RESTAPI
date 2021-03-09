@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -61,6 +62,7 @@ public class UserControllerTest {
                 .param("username", "username")
                 .param("password", "Test123!")
                 .param("role", "USER")
+                .with(csrf())
         ).andExpect(redirectedUrl("/user/list"));
     }
 
@@ -73,6 +75,7 @@ public class UserControllerTest {
                 .param("username", "username")
                 .param("password", "password")
                 .param("role", "USER")
+                .with(csrf())
         ).andExpect(model().hasErrors());
     }
 
@@ -85,6 +88,7 @@ public class UserControllerTest {
                 .param("username", "username")
                 .param("password", "Test123!")
                 .param("role", "USER")
+                .with(csrf())
         ).andExpect(redirectedUrl("/user/list"));
     }
 
@@ -119,7 +123,9 @@ public class UserControllerTest {
                 .param("fullname","fullname")
                 .param("username", "username")
                 .param("password", "Test123!")
-                .param("role", "USER")).andExpect(redirectedUrl("/user/list"));
+                .param("role", "USER")
+                .with(csrf())
+        ).andExpect(redirectedUrl("/user/list"));
     }
 
     @WithMockUser(authorities = "ADMIN")
@@ -131,7 +137,9 @@ public class UserControllerTest {
                 .param("fullname","fullname")
                 .param("username", "username")
                 .param("password", "password")
-                .param("role", "USER")).andExpect(model().hasErrors());
+                .param("role", "USER")
+                .with(csrf())
+        ).andExpect(model().hasErrors());
     }
 
     @WithMockUser(authorities = "ADMIN")
