@@ -53,12 +53,24 @@ public class BidControllerTests {
 
     @WithMockUser(authorities = "ADMIN")
     @Test
+    @Transactional
     public void testValidateBidListAdmin() throws Exception{
        this.mockMvc.perform(post("/bidList/validate")
                .param("account","account")
                .param("type", "type")
                .param("bidQuantity", "1")
-       ).andExpect(status().isOk());
+       ).andExpect(redirectedUrl("/bidList/list"));
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Test
+    @Transactional
+    public void testValidateBidListAdminHasErrors() throws Exception{
+        this.mockMvc.perform(post("/bidList/validate")
+                .param("account","account")
+                .param("type", "type")
+                .param("bidQuantity", "B")
+        ).andExpect(model().hasErrors());
     }
 
     @WithMockUser
@@ -90,6 +102,28 @@ public class BidControllerTests {
         BidList bid = bidListService.saveBid(new BidList("Account", "Type", 10.0d));
 
         this.mockMvc.perform(get("/bidList/update/"+bid.getBidListId())).andExpect(status().isForbidden());
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Transactional
+    @Test
+    public void testUpdateBidListAdmin() throws Exception{
+        BidList bid = bidListService.saveBid(new BidList("Account", "Type", 10.0d));
+        this.mockMvc.perform(post("/bidList/update/"+bid.getBidListId())
+                .param("account","nuAccount")
+                .param("type","nuType")
+                .param("bidQuantity","12.0")).andExpect(redirectedUrl("/bidList/list"));
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Transactional
+    @Test
+    public void testUpdateBidListAdminHasError() throws Exception{
+        BidList bid = bidListService.saveBid(new BidList("Account", "Type", 10.0d));
+        this.mockMvc.perform(post("/bidList/update/"+bid.getBidListId())
+                .param("account","nuAccount")
+                .param("type","nuType")
+                .param("bidQuantity","A.0")).andExpect(model().hasErrors());
     }
 
     @WithMockUser(authorities = "ADMIN")

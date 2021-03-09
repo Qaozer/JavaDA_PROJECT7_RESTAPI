@@ -2,6 +2,7 @@ package com.nnk.springboot;
 
 import com.nnk.springboot.Services.RuleNameService;
 import com.nnk.springboot.domain.RuleName;
+import com.nnk.springboot.domain.RuleName;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,8 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -63,7 +63,19 @@ public class RuleControllerTest {
                 .param("template", "template")
                 .param("sqlStr", "sqlStr")
                 .param("sqlPart", "sqlPart")
-        ).andExpect(status().isOk());
+        ).andExpect(redirectedUrl("/ruleName/list"));
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Test
+    public void testValidateRuleNameAdminHasError() throws Exception{
+        this.mockMvc.perform(post("/ruleName/validate")
+                .param("description", "description")
+                .param("json", "json")
+                .param("template", "template")
+                .param("sqlStr", "sqlStr")
+                .param("sqlPart", "sqlPart")
+        ).andExpect(model().hasErrors());
     }
 
     @WithMockUser
@@ -82,7 +94,7 @@ public class RuleControllerTest {
     @WithMockUser(authorities = "ADMIN")
     @Transactional
     @Test
-    public void testShowUpdateBidListAdmin() throws Exception{
+    public void testShowUpdateRuleNameAdmin() throws Exception{
         RuleName ruleName = ruleNameService.save(new RuleName("name", "description", "json", "template", "sqlStr", "sqlPart"));
 
         this.mockMvc.perform(get("/ruleName/update/"+ruleName.getId()))
@@ -97,16 +109,44 @@ public class RuleControllerTest {
     @WithMockUser
     @Transactional
     @Test
-    public void testShowUpdateBidList() throws Exception{
+    public void testShowUpdateRuleName() throws Exception{
         RuleName ruleName = ruleNameService.save(new RuleName("name", "description", "json", "template", "sqlStr", "sqlPart"));
 
         this.mockMvc.perform(get("/ruleName/update/"+ruleName.getId())).andExpect(status().isForbidden());
     }
 
+
     @WithMockUser(authorities = "ADMIN")
     @Transactional
     @Test
-    public void testDeleteBidListAdmin() throws Exception{
+    public void testUpdateRuleNameAdmin() throws Exception{
+        RuleName ruleName = ruleNameService.save(new RuleName("name", "description", "json", "template", "sqlStr", "sqlPart"));
+        this.mockMvc.perform(post("/ruleName/update/"+ruleName.getId())
+                .param("name","name")
+                .param("description", "description")
+                .param("json", "json")
+                .param("template", "template")
+                .param("sqlStr", "sqlStr")
+                .param("sqlPart", "sqlPart")).andExpect(redirectedUrl("/ruleName/list"));
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Transactional
+    @Test
+    public void testUpdateRuleNameAdminHasError() throws Exception{
+        RuleName ruleName = ruleNameService.save(new RuleName("name", "description", "json", "template", "sqlStr", "sqlPart"));
+        this.mockMvc.perform(post("/ruleName/update/"+ruleName.getId())
+                .param("description", "description")
+                .param("json", "json")
+                .param("template", "template")
+                .param("sqlStr", "sqlStr")
+                .param("sqlPart", "sqlPart")).andExpect(model().hasErrors());
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Transactional
+    @Test
+    public void testDeleteRuleNameAdmin() throws Exception{
         RuleName ruleName = ruleNameService.save(new RuleName("name", "description", "json", "template", "sqlStr", "sqlPart"));
 
         this.mockMvc.perform(get("/ruleName/delete/"+ruleName.getId())).andExpect(status().isFound()).andReturn();

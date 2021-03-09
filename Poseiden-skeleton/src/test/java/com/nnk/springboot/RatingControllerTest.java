@@ -1,6 +1,7 @@
 package com.nnk.springboot;
 
 import com.nnk.springboot.Services.RatingService;
+import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.domain.Rating;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -15,8 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -61,7 +61,17 @@ public class RatingControllerTest {
                 .param("sandPRating", "sandPRating")
                 .param("fitchRating", "fitchRating")
                 .param("orderNumber", "1")
-        ).andExpect(status().isOk());
+        ).andExpect(redirectedUrl("/rating/list"));
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Test
+    public void testValidateRatingAdminError() throws Exception{
+        this.mockMvc.perform(post("/rating/validate")
+                .param("sandPRating", "sandPRating")
+                .param("fitchRating", "fitchRating")
+                .param("orderNumber", "1")
+        ).andExpect(model().hasErrors());
     }
 
     @WithMockUser
@@ -78,7 +88,7 @@ public class RatingControllerTest {
     @WithMockUser(authorities = "ADMIN")
     @Transactional
     @Test
-    public void testShowUpdateBidListAdmin() throws Exception{
+    public void testShowUpdateRatingAdmin() throws Exception{
         Rating rating = ratingService.save(new Rating("moodysRating", "sandPRating", "fitchRating", 42));
 
         this.mockMvc.perform(get("/rating/update/"+rating.getId()))
@@ -91,7 +101,7 @@ public class RatingControllerTest {
     @WithMockUser
     @Transactional
     @Test
-    public void testShowUpdateBidList() throws Exception{
+    public void testShowUpdateRating() throws Exception{
         Rating rating = ratingService.save(new Rating("moodysRating", "sandPRating", "fitchRating", 42));
 
         this.mockMvc.perform(get("/rating/update/"+rating.getId())).andExpect(status().isForbidden());
@@ -100,7 +110,30 @@ public class RatingControllerTest {
     @WithMockUser(authorities = "ADMIN")
     @Transactional
     @Test
-    public void testDeleteBidListAdmin() throws Exception{
+    public void testUpdateBidListAdmin() throws Exception{
+        Rating rating = ratingService.save(new Rating("moodysRating", "sandPRating", "fitchRating", 42));
+        this.mockMvc.perform(post("/rating/update/"+rating.getId())
+                .param("moodysRating","moodysRating")
+                .param("sandPRating", "sandPRating")
+                .param("fitchRating", "fitchRating")
+                .param("orderNumber", "1")).andExpect(redirectedUrl("/rating/list"));
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Transactional
+    @Test
+    public void testUpdateBidListAdminHasError() throws Exception{
+        Rating rating = ratingService.save(new Rating("moodysRating", "sandPRating", "fitchRating", 42));
+        this.mockMvc.perform(post("/rating/update/"+rating.getId())
+                .param("sandPRating", "sandPRating")
+                .param("fitchRating", "fitchRating")
+                .param("orderNumber", "1")).andExpect(model().hasErrors());
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Transactional
+    @Test
+    public void testDeleteRatingAdmin() throws Exception{
         Rating rating = ratingService.save(new Rating("moodysRating", "sandPRating", "fitchRating", 42));
 
         this.mockMvc.perform(get("/rating/delete/"+rating.getId())).andExpect(status().isFound()).andReturn();

@@ -16,8 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -58,17 +57,27 @@ public class CurvePointControllerTest {
     @Test
     public void testValidateCurvePointAdmin() throws Exception{
         this.mockMvc.perform(post("/curvePoint/validate")
-                .param("curveId","curveId")
+                .param("curveId","90")
                 .param("term", "10.0")
                 .param("value", "10.0")
-        ).andExpect(status().isOk());
+        ).andExpect(redirectedUrl("/curvePoint/list"));
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Test
+    public void testValidateCurvePointAdminHasError() throws Exception{
+        this.mockMvc.perform(post("/curvePoint/validate")
+                .param("curveId","90")
+                .param("term", "A")
+                .param("value", "B")
+        ).andExpect(model().hasErrors());
     }
 
     @WithMockUser
     @Test
     public void testValidateCurvePoint() throws Exception{
         this.mockMvc.perform(post("/curvePoint/validate")
-                .param("curveId","curveId")
+                .param("curveId","90")
                 .param("term", "10.0")
                 .param("value", "10.0")
         ).andExpect(status().isForbidden());
@@ -77,7 +86,7 @@ public class CurvePointControllerTest {
     @WithMockUser(authorities = "ADMIN")
     @Transactional
     @Test
-    public void testShowUpdateBidListAdmin() throws Exception{
+    public void testShowUpdateCurvePointAdmin() throws Exception{
         CurvePoint curvePoint = curveService.save(new CurvePoint(42, 10.0d,10.0d));
 
         this.mockMvc.perform(get("/curvePoint/update/"+curvePoint.getId()))
@@ -89,10 +98,32 @@ public class CurvePointControllerTest {
     @WithMockUser
     @Transactional
     @Test
-    public void testShowUpdateBidList() throws Exception{
+    public void testShowUpdateCurvePoint() throws Exception{
         CurvePoint curvePoint = curveService.save(new CurvePoint(42, 10.0d,10.0d));
 
         this.mockMvc.perform(get("/curvePoint/update/"+curvePoint.getId())).andExpect(status().isForbidden());
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Transactional
+    @Test
+    public void testUpdateCurvePointAdmin() throws Exception{
+        CurvePoint curvePoint = curveService.save(new CurvePoint(42, 10.0d,10.0d));
+        this.mockMvc.perform(post("/curvePoint/update/"+curvePoint.getId())
+                .param("curveId","91")
+                .param("term","12.0")
+                .param("value","12.0")).andExpect(redirectedUrl("/curvePoint/list"));
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Transactional
+    @Test
+    public void testUpdateCurvePointAdminHasError() throws Exception{
+        CurvePoint curvePoint = curveService.save(new CurvePoint(42, 10.0d,10.0d));
+        this.mockMvc.perform(post("/curvePoint/update/"+curvePoint.getId())
+                .param("curveId","91")
+                .param("term","12.0")
+                .param("value","A")).andExpect(model().hasErrors());
     }
 
     @WithMockUser(authorities = "ADMIN")

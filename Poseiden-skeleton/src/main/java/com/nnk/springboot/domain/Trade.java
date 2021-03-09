@@ -2,6 +2,7 @@ package com.nnk.springboot.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 
@@ -13,9 +14,11 @@ public class Trade {
     @Column(name = "TradeId")
     private int tradeId;
 
+    @NotBlank(message = "Mandatory")
     @Column(nullable = false, length = 30)
     private String account;
 
+    @NotBlank(message = "Mandatory")
     @Column(nullable = false, length = 30)
     private String type;
 

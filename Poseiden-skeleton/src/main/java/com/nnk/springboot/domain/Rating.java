@@ -13,15 +13,19 @@ public class Rating {
     @Column(name = "Id")
     private int id;
 
+    @NotBlank(message = "Mandatory")
     @Column(length = 125)
     private String moodysRating;
 
+    @NotBlank(message = "Mandatory")
     @Column(length = 125)
     private String sandPRating;
 
+    @NotBlank(message = "Mandatory")
     @Column(length = 125)
     private String fitchRating;
 
+    @NotNull
     private int orderNumber;
 
     public Rating() {

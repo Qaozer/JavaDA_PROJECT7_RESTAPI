@@ -15,8 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -55,24 +54,38 @@ public class UserControllerTest {
 
     @WithMockUser(authorities = "ADMIN")
     @Test
+    @Transactional
     public void testValidateUserAdmin() throws Exception{
         this.mockMvc.perform(post("/user/validate")
                 .param("fullname","fullname")
                 .param("username", "username")
-                .param("password", "password")
+                .param("password", "Test123!")
                 .param("role", "USER")
-        ).andExpect(status().isOk());
+        ).andExpect(redirectedUrl("/user/list"));
     }
 
-    @WithMockUser
+    @WithMockUser(authorities = "ADMIN")
     @Test
-    public void testValidateUser() throws Exception{
+    @Transactional
+    public void testValidateUserAdminHasError() throws Exception{
         this.mockMvc.perform(post("/user/validate")
                 .param("fullname","fullname")
                 .param("username", "username")
                 .param("password", "password")
                 .param("role", "USER")
-        ).andExpect(status().isOk());
+        ).andExpect(model().hasErrors());
+    }
+
+    @WithMockUser
+    @Test
+    @Transactional
+    public void testValidateUser() throws Exception{
+        this.mockMvc.perform(post("/user/validate")
+                .param("fullname","fullname")
+                .param("username", "username")
+                .param("password", "Test123!")
+                .param("role", "USER")
+        ).andExpect(redirectedUrl("/user/list"));
     }
 
     @WithMockUser(authorities = "ADMIN")
@@ -82,19 +95,43 @@ public class UserControllerTest {
         User user = userService.add(new User("Username", "Fullname", "Password", RoleEnum.USER.getCode()));
 
         this.mockMvc.perform(get("/user/update/"+user.getId()))
-                .andExpect(model().attribute("user", Matchers.hasProperty("username",Matchers.equalTo("Username"))))
-                .andExpect(model().attribute("user", Matchers.hasProperty("fullname",Matchers.equalTo("Fullname"))))
-                .andExpect(model().attribute("user", Matchers.hasProperty("password",Matchers.equalTo(""))))
-                .andExpect(model().attribute("user", Matchers.hasProperty("role",Matchers.equalTo(RoleEnum.USER.getCode()))));
+                .andExpect(model().attribute("userDto", Matchers.hasProperty("fullname",Matchers.equalTo("Fullname"))))
+                .andExpect(model().attribute("userDto", Matchers.hasProperty("password",Matchers.equalTo(""))))
+                .andExpect(model().attribute("userDto", Matchers.hasProperty("role",Matchers.equalTo(RoleEnum.USER.getCode()))));
     }
 
     @WithMockUser
     @Transactional
     @Test
     public void testShowUpdateUser() throws Exception{
-        User user = userService.add(new User("Username", "Fullname", "Password", RoleEnum.USER.getCode()));
+        User user = userService.add(new User("Username", "Fullname", "Test123!", RoleEnum.USER.getCode()));
 
         this.mockMvc.perform(get("/user/update/"+user.getId())).andExpect(status().isForbidden());
+    }
+
+
+    @WithMockUser(authorities = "ADMIN")
+    @Transactional
+    @Test
+    public void testUpdateUserAdmin() throws Exception{
+        User user = userService.add(new User("Username", "Fullname", "Test123!", RoleEnum.USER.getCode()));
+        this.mockMvc.perform(post("/user/update/"+user.getId())
+                .param("fullname","fullname")
+                .param("username", "username")
+                .param("password", "Test123!")
+                .param("role", "USER")).andExpect(redirectedUrl("/user/list"));
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Transactional
+    @Test
+    public void testUpdateUserAdminHasError() throws Exception{
+        User user = userService.add(new User("Username", "Fullname", "Password", RoleEnum.USER.getCode()));
+        this.mockMvc.perform(post("/user/update/"+user.getId())
+                .param("fullname","fullname")
+                .param("username", "username")
+                .param("password", "password")
+                .param("role", "USER")).andExpect(model().hasErrors());
     }
 
     @WithMockUser(authorities = "ADMIN")

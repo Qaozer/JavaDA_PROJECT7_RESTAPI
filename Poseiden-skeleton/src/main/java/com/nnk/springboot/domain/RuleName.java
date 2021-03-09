@@ -12,21 +12,27 @@ public class RuleName {
     @Column(name = "Id")
     private int id;
 
+    @NotBlank(message = "Mandatory")
     @Column(length = 125)
     private String name;
 
+    @NotBlank(message = "Mandatory")
     @Column(length = 125)
     private String description;
 
+    @NotBlank(message = "Mandatory")
     @Column(length = 125)
     private String json;
 
+    @NotBlank(message = "Mandatory")
     @Column(length = 512)
     private String template;
 
+    @NotBlank(message = "Mandatory")
     @Column(length = 125)
     private String sqlStr;
 
+    @NotBlank(message = "Mandatory")
     @Column(length = 125)
     private String sqlPart;
 
