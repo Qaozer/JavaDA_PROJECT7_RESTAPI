@@ -1,4 +1,4 @@
-package com.nnk.springboot;
+package com.nnk.springboot.config;
 
 import com.nnk.springboot.Services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

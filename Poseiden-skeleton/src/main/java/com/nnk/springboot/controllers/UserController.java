@@ -1,7 +1,7 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.Services.UserService;
-import com.nnk.springboot.UserDto;
+import com.nnk.springboot.utils.UserDto;
 import com.nnk.springboot.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

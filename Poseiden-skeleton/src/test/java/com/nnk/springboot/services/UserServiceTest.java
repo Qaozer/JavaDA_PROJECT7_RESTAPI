@@ -1,7 +1,9 @@
-package com.nnk.springboot;
+package com.nnk.springboot.services;
 
 import com.nnk.springboot.Services.UserService;
 import com.nnk.springboot.domain.User;
+import com.nnk.springboot.utils.RoleEnum;
+import com.nnk.springboot.utils.UserDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

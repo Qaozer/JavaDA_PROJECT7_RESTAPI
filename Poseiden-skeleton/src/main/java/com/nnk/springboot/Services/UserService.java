@@ -1,6 +1,6 @@
 package com.nnk.springboot.Services;
 
-import com.nnk.springboot.UserDto;
+import com.nnk.springboot.utils.UserDto;
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

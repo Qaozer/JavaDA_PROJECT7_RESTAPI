@@ -1,7 +1,8 @@
-package com.nnk.springboot;
+package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.Services.UserService;
 import com.nnk.springboot.domain.User;
+import com.nnk.springboot.utils.RoleEnum;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;

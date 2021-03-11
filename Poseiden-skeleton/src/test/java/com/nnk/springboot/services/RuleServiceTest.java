@@ -1,4 +1,4 @@
-package com.nnk.springboot;
+package com.nnk.springboot.services;
 
 import com.nnk.springboot.Services.RuleNameService;
 import com.nnk.springboot.domain.RuleName;

@@ -1,4 +1,4 @@
-package com.nnk.springboot;
+package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.Services.RatingService;
 import com.nnk.springboot.domain.BidList;
