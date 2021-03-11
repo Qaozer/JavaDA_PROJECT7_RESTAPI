@@ -111,7 +111,7 @@ public class CurveController {
     @GetMapping("/curvePoint/delete/{id}")
     public String deleteBid(@PathVariable("id") Integer id, Model model) {
         logger.info("[GET] Accessing /curvepoint/delete/"+id);
-        curveService.delete(curveService.findById(id));
+        curveService.delete(id);
         logger.info("[DEL] Curvepoint deleted");
         return "redirect:/curvePoint/list";
     }

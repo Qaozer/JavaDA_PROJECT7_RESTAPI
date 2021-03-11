@@ -55,9 +55,9 @@ public class CurveService {
 
     /**
      * Deletes a curvePoint
-     * @param curvePoint the curvePoint
+     * @param id the curvePoint id
      */
-    public void delete(CurvePoint curvePoint){
-        curvePointRepository.delete(curvePoint);
+    public void delete(int id){
+        curvePointRepository.deleteById(id);
     }
 }

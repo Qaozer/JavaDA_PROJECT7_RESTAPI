@@ -56,7 +56,6 @@ public class RatingService {
      * @param id the rating id
      */
     public void delete(int id){
-        Rating rating = this.findById(id);
-        ratingRepository.delete(rating);
+        ratingRepository.deleteById(id);
     }
 }
