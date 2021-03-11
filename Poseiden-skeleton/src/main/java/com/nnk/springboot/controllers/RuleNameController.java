@@ -22,6 +22,11 @@ public class RuleNameController {
 
     private static Logger logger = LoggerFactory.getLogger(RuleNameController.class);
 
+    /**
+     * Displays a list of ruleNames
+     * @param model
+     * @return
+     */
     @RequestMapping("/ruleName/list")
     public String home(Model model)
     {
@@ -30,12 +35,24 @@ public class RuleNameController {
         return "ruleName/list";
     }
 
+    /**
+     * Displays the page to add a ruleName
+     * @param ruleName
+     * @return
+     */
     @GetMapping("/ruleName/add")
     public String addRuleNameForm(RuleName ruleName) {
         logger.info("[GET] Accessing /ruleName/add");
         return "ruleName/add";
     }
 
+    /**
+     * Validates a ruleName before saving it in database
+     * @param ruleName
+     * @param result
+     * @param model
+     * @return
+     */
     @PostMapping("/ruleName/validate")
     public String validate(@Valid RuleName ruleName, BindingResult result, Model model) {
         logger.info("[POST] Accessing /ruleName/validate");
@@ -49,6 +66,12 @@ public class RuleNameController {
         return "ruleName/add";
     }
 
+    /**
+     * Displays the page to update a ruleName
+     * @param id the ruleName id
+     * @param model
+     * @return
+     */
     @GetMapping("/ruleName/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         logger.info("[GET] Accessing /ruleName/update/"+id);
@@ -57,6 +80,14 @@ public class RuleNameController {
         return "ruleName/update";
     }
 
+    /**
+     * Updates a ruleName if no error was found
+     * @param id the ruleName id
+     * @param ruleName
+     * @param result
+     * @param model
+     * @return
+     */
     @PostMapping("/ruleName/update/{id}")
     public String updateRuleName(@PathVariable("id") Integer id, @Valid RuleName ruleName,
                                BindingResult result, Model model) {
@@ -72,10 +103,22 @@ public class RuleNameController {
         return "redirect:/ruleName/list";
     }
 
+    /**
+     * Deletes a ruleName
+     * @param id the ruleName id
+     * @param model
+     * @return
+     */
     @GetMapping("/ruleName/delete/{id}")
     public String deleteRuleName(@PathVariable("id") Integer id, Model model) {
         logger.info("[GET] Accessing /ruleName/delete/"+id);
-        ruleNameService.delete(id);
+        try{
+            ruleNameService.findById(id);
+            ruleNameService.delete(id);
+            logger.info("[DEL] ruleName deleted");
+        } catch (Exception e) {
+            logger.info("[DEL] Invalid ruleName id");
+        }
         model.addAttribute("ruleNames", ruleNameService.findAll());
         logger.info("[DEL] Rulename deleted");
         return "redirect:/ruleName/list";

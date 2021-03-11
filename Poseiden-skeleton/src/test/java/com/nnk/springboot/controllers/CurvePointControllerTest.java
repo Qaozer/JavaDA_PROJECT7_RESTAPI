@@ -1,4 +1,4 @@
-package com.nnk.springboot;
+package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.Services.CurveService;
 import com.nnk.springboot.domain.BidList;

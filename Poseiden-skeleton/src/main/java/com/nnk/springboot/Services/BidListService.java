@@ -16,27 +16,49 @@ public class BidListService {
     @Autowired
     private BidListRepository bidListRepository;
 
+    /**
+     * Retrieves the list of all bidLists from the database
+     * @return a list of bidLists
+     */
     @Transactional(readOnly=true)
     public List<BidList> findAll(){
         return bidListRepository.findAll();
     }
 
+    /**
+     * Retrieves a bidList by its id
+     * @param id the bidListId in database
+     * @return an optional of a bidList
+     */
     @Transactional(readOnly=true)
     public Optional<BidList> findById(int id){
         return bidListRepository.findById(id);
     }
 
-    public BidList saveBid(BidList bid){
+    /**
+     * Saves a bidList in database
+     * @param bid the bidList to be saved
+     * @return the bidList
+     */
+    public BidList save(BidList bid){
         return bidListRepository.save(bid);
     }
 
-    public BidList updateBid(BidList bid, BidList update){
-        bid.setAccount(update.getAccount());
-        bid.setType(update.getType());
-        bid.setBidQuantity(update.getBidQuantity());
-        return bidListRepository.save(bid);
+    /**
+     * Updates a bidList in database
+     * @param update the updated bidlist information
+     * @param id the bidListId in database
+     * @return the bidList saved in database
+     */
+    public BidList update(BidList update, Integer id){
+        update.setBidListId(id);
+        return bidListRepository.save(update);
     }
 
+    /**
+     * Deletes a bidList
+     * @param id the bidListId
+     */
     public void deleteById(int id){
         bidListRepository.deleteById(id);
     }

@@ -1,4 +1,4 @@
-package com.nnk.springboot;
+package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.Services.BidListService;
 import com.nnk.springboot.domain.BidList;
@@ -91,7 +91,7 @@ public class BidControllerTests {
     @Transactional
     @Test
     public void testShowUpdateBidListAdmin() throws Exception{
-        BidList bid = bidListService.saveBid(new BidList("Account", "Type", 10.0d));
+        BidList bid = bidListService.save(new BidList("Account", "Type", 10.0d));
 
         this.mockMvc.perform(get("/bidList/update/"+bid.getBidListId()))
                 .andExpect(model().attribute("bidList", Matchers.hasProperty("account",Matchers.equalTo("Account"))))
@@ -103,7 +103,7 @@ public class BidControllerTests {
     @Transactional
     @Test
     public void testShowUpdateBidList() throws Exception{
-        BidList bid = bidListService.saveBid(new BidList("Account", "Type", 10.0d));
+        BidList bid = bidListService.save(new BidList("Account", "Type", 10.0d));
 
         this.mockMvc.perform(get("/bidList/update/"+bid.getBidListId())).andExpect(status().isForbidden());
     }
@@ -112,7 +112,7 @@ public class BidControllerTests {
     @Transactional
     @Test
     public void testUpdateBidListAdmin() throws Exception{
-        BidList bid = bidListService.saveBid(new BidList("Account", "Type", 10.0d));
+        BidList bid = bidListService.save(new BidList("Account", "Type", 10.0d));
         this.mockMvc.perform(post("/bidList/update/"+bid.getBidListId())
                 .param("account","nuAccount")
                 .param("type","nuType")
@@ -125,7 +125,7 @@ public class BidControllerTests {
     @Transactional
     @Test
     public void testUpdateBidListAdminHasError() throws Exception{
-        BidList bid = bidListService.saveBid(new BidList("Account", "Type", 10.0d));
+        BidList bid = bidListService.save(new BidList("Account", "Type", 10.0d));
         this.mockMvc.perform(post("/bidList/update/"+bid.getBidListId())
                 .param("account","nuAccount")
                 .param("type","nuType")
@@ -138,7 +138,7 @@ public class BidControllerTests {
     @Transactional
     @Test
     public void testDeleteBidListAdmin() throws Exception{
-        BidList bid = bidListService.saveBid(new BidList("Account", "Type", 10.0d));
+        BidList bid = bidListService.save(new BidList("Account", "Type", 10.0d));
 
         this.mockMvc.perform(get("/bidList/delete/"+bid.getBidListId())).andExpect(status().isFound()).andReturn();
     }

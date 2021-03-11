@@ -1,7 +1,8 @@
-package com.nnk.springboot;
+package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.Services.UserService;
 import com.nnk.springboot.domain.User;
+import com.nnk.springboot.utils.RoleEnum;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -96,7 +97,7 @@ public class UserControllerTest {
     @Transactional
     @Test
     public void testShowUpdateUserAdmin() throws Exception{
-        User user = userService.add(new User("Username", "Fullname", "Password", RoleEnum.USER.getCode()));
+        User user = userService.save(new User("Username", "Fullname", "Password", RoleEnum.USER.getCode()));
 
         this.mockMvc.perform(get("/user/update/"+user.getId()))
                 .andExpect(model().attribute("userDto", Matchers.hasProperty("fullname",Matchers.equalTo("Fullname"))))
@@ -108,7 +109,7 @@ public class UserControllerTest {
     @Transactional
     @Test
     public void testShowUpdateUser() throws Exception{
-        User user = userService.add(new User("Username", "Fullname", "Test123!", RoleEnum.USER.getCode()));
+        User user = userService.save(new User("Username", "Fullname", "Test123!", RoleEnum.USER.getCode()));
 
         this.mockMvc.perform(get("/user/update/"+user.getId())).andExpect(status().isForbidden());
     }
@@ -118,7 +119,7 @@ public class UserControllerTest {
     @Transactional
     @Test
     public void testUpdateUserAdmin() throws Exception{
-        User user = userService.add(new User("Username", "Fullname", "Test123!", RoleEnum.USER.getCode()));
+        User user = userService.save(new User("Username", "Fullname", "Test123!", RoleEnum.USER.getCode()));
         this.mockMvc.perform(post("/user/update/"+user.getId())
                 .param("fullname","fullname")
                 .param("username", "username")
@@ -132,7 +133,7 @@ public class UserControllerTest {
     @Transactional
     @Test
     public void testUpdateUserAdminHasError() throws Exception{
-        User user = userService.add(new User("Username", "Fullname", "Password", RoleEnum.USER.getCode()));
+        User user = userService.save(new User("Username", "Fullname", "Password", RoleEnum.USER.getCode()));
         this.mockMvc.perform(post("/user/update/"+user.getId())
                 .param("fullname","fullname")
                 .param("username", "username")
@@ -146,7 +147,7 @@ public class UserControllerTest {
     @Transactional
     @Test
     public void testDeleteUserAdmin() throws Exception{
-        User user = userService.add(new User("Username", "Fullname", "Password", RoleEnum.USER.getCode()));
+        User user = userService.save(new User("Username", "Fullname", "Password", RoleEnum.USER.getCode()));
 
         this.mockMvc.perform(get("/user/delete/"+user.getId())).andExpect(status().isFound()).andReturn();
     }

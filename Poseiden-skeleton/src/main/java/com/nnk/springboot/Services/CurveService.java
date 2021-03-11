@@ -14,27 +14,50 @@ public class CurveService {
     @Autowired
     private CurvePointRepository curvePointRepository;
 
+    /**
+     * Gets a list of all curvePoints from the database
+     * @return a list of curvePoints
+     */
     @Transactional(readOnly=true)
     public List<CurvePoint> findAll(){
         return curvePointRepository.findAll();
     }
 
+    /**
+     * Saves a curvePoint in database
+     * @param curvePoint the curvePoint
+     * @return the curvePoint in database
+     */
     public CurvePoint save(CurvePoint curvePoint){
         return curvePointRepository.save(curvePoint);
     }
 
+    /**
+     * Finds a curvePoint by its id
+     * @param id the curvePoint id
+     * @return the curvePoint or an exception if it was not found
+     */
     @Transactional(readOnly=true)
     public CurvePoint findById(int id){
         return curvePointRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid curvePoint Id:" + id));
     }
 
-    public CurvePoint update(CurvePoint old, CurvePoint updated){
-        old.setTerm(updated.getTerm());
-        old.setValue(updated.getValue());
-        return curvePointRepository.save(old);
+    /**
+     * Updates a curvePoint
+     * @param updated the curvePoint with updated infos
+     * @param id the curvePoint id int database
+     * @return the curvePoint in database
+     */
+    public CurvePoint update(CurvePoint updated, int id){
+        updated.setId(id);
+        return curvePointRepository.save(updated);
     }
 
-    public void delete(CurvePoint curvePoint){
-        curvePointRepository.delete(curvePoint);
+    /**
+     * Deletes a curvePoint
+     * @param id the curvePoint id
+     */
+    public void delete(int id){
+        curvePointRepository.deleteById(id);
     }
 }

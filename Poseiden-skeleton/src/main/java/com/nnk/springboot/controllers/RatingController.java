@@ -22,6 +22,11 @@ public class RatingController {
 
     private static Logger logger = LoggerFactory.getLogger(RatingController.class);
 
+    /**
+     * Displays a list of ratings
+     * @param model
+     * @return
+     */
     @RequestMapping("/rating/list")
     public String home(Model model)
     {
@@ -30,12 +35,24 @@ public class RatingController {
         return "rating/list";
     }
 
+    /**
+     * Displays the page to add a rating
+     * @param rating
+     * @return
+     */
     @GetMapping("/rating/add")
     public String addRatingForm(Rating rating) {
         logger.info("[GET] Accessing /rating/add");
         return "rating/add";
     }
 
+    /**
+     * Validation of a newly created rating
+     * @param rating
+     * @param result
+     * @param model
+     * @return
+     */
     @PostMapping("/rating/validate")
     public String validate(@Valid Rating rating, BindingResult result, Model model) {
         logger.info("[POST] Accessing /rating/validate");
@@ -49,6 +66,12 @@ public class RatingController {
         return "rating/add";
     }
 
+    /**
+     * Displays the page to update a rating
+     * @param id the rating id in database
+     * @param model
+     * @return
+     */
     @GetMapping("/rating/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         logger.info("[GET] Accessing /rating/update/"+id);
@@ -57,6 +80,14 @@ public class RatingController {
         return "rating/update";
     }
 
+    /**
+     * Updates the rating in database if no error was found
+     * @param id the rating id in database
+     * @param rating
+     * @param result
+     * @param model
+     * @return
+     */
     @PostMapping("/rating/update/{id}")
     public String updateRating(@PathVariable("id") Integer id, @Valid Rating rating,
                              BindingResult result, Model model) {
@@ -72,12 +103,23 @@ public class RatingController {
         return "redirect:/rating/list";
     }
 
+    /**
+     * Deletes a rating
+     * @param id the rating id in database
+     * @param model
+     * @return
+     */
     @GetMapping("/rating/delete/{id}")
     public String deleteRating(@PathVariable("id") Integer id, Model model) {
         logger.info("[GET] Accessing /rating/delete/"+id);
-        ratingService.delete(id);
+        try{
+            ratingService.findById(id);
+            ratingService.delete(id);
+            logger.info("[DEL] Rating deleted");
+        } catch (Exception e) {
+            logger.info("[DEL] Invalid Rating id");
+        }
         model.addAttribute("ratings", ratingService.findAll());
-        logger.info("[DEL] Rating deleted");
         return "redirect:/rating/list";
     }
 }

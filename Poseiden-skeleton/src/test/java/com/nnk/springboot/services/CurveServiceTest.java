@@ -1,4 +1,4 @@
-package com.nnk.springboot;
+package com.nnk.springboot.services;
 
 import com.nnk.springboot.Services.CurveService;
 import com.nnk.springboot.domain.CurvePoint;
@@ -56,7 +56,7 @@ public class CurveServiceTest {
         int id = curvePoint.getId();
 
         CurvePoint nuCurve = new CurvePoint(10, 10d, 40d);
-        curvePoint = curveService.update(curvePoint, nuCurve);
+        curvePoint = curveService.update(nuCurve, id);
 
         assertEquals(id, curvePoint.getId());
         assertEquals(10d, curvePoint.getTerm(), 1d);
@@ -72,7 +72,7 @@ public class CurveServiceTest {
 
         assertEquals( count + 1, curveService.findAll().size());
 
-        curveService.delete(curvePoint);
+        curveService.delete(curvePoint.getId());
 
         assertEquals( count, curveService.findAll().size());
     }

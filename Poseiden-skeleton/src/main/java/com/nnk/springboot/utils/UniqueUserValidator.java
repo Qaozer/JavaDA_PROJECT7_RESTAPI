@@ -1,4 +1,4 @@
-package com.nnk.springboot;
+package com.nnk.springboot.utils;
 
 import com.nnk.springboot.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

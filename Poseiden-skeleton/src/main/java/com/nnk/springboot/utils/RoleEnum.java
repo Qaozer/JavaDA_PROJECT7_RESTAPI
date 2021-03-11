@@ -1,4 +1,4 @@
-package com.nnk.springboot;
+package com.nnk.springboot.utils;
 
 public enum RoleEnum {
     USER("USER"),

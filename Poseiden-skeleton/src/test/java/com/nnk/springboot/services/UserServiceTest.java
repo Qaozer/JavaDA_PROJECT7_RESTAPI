@@ -1,7 +1,9 @@
-package com.nnk.springboot;
+package com.nnk.springboot.services;
 
 import com.nnk.springboot.Services.UserService;
 import com.nnk.springboot.domain.User;
+import com.nnk.springboot.utils.RoleEnum;
+import com.nnk.springboot.utils.UserDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ public class UserServiceTest {
     public void addUserTest(){
         User user = new User(username, fullname, password, role);
 
-        User inDb = userService.add(user);
+        User inDb = userService.save(user);
         assertNotNull(inDb.getId());
         assertEquals(fullname, inDb.getFullname());
         assertEquals(username, inDb.getUsername());
@@ -38,14 +40,14 @@ public class UserServiceTest {
     @Test
     public void findUserByIdTest(){
         User user = new User(username, fullname, password, role);
-        user = userService.add(user);
+        user = userService.save(user);
         assertTrue(userService.findById(user.getId()).isPresent());
     }
 
     @Test
     public void findUserByUsernameTest(){
         User user = new User(username, fullname, password, role);
-        user = userService.add(user);
+        user = userService.save(user);
         assertTrue(userService.findByUsername(username).isPresent());
     }
 
@@ -53,7 +55,7 @@ public class UserServiceTest {
     public void updateUserTest(){
         User user = new User(username, fullname, password, role);
 
-        user = userService.add(user);
+        user = userService.save(user);
         UserDto nuUser = new UserDto(user.getId(), "motdepasse", "Nom", user.getRole());
 
         user = userService.update(nuUser, user.getId());
@@ -70,7 +72,7 @@ public class UserServiceTest {
         int count = userService.findAll().size();
         User user = new User(username, fullname, password, role);
 
-        user = userService.add(user);
+        user = userService.save(user);
 
         assertTrue(userService.findAll().size() > count);
 

@@ -1,4 +1,4 @@
-package com.nnk.springboot;
+package com.nnk.springboot.utils;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
