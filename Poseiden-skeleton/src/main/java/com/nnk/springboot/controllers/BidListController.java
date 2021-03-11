@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Optional;
 
-
+/**
+ * Controller for bidlist
+ */
 @Controller
 public class BidListController {
     @Autowired
@@ -21,6 +23,11 @@ public class BidListController {
 
     private static Logger logger = LoggerFactory.getLogger(BidListController.class);
 
+    /**
+     * Displays a list of bidlists
+     * @param model
+     * @return
+     */
     @RequestMapping("/bidList/list")
     public String home(Model model)
     {
@@ -29,12 +36,24 @@ public class BidListController {
         return "bidList/list";
     }
 
+    /**
+     * Displays the page to add a bidlist
+     * @param bid
+     * @return
+     */
     @GetMapping("/bidList/add")
     public String addBidForm(BidList bid) {
         logger.info("[GET] Accessing /Bidlist/add");
         return "bidList/add";
     }
 
+    /**
+     * Validation of a newly created bidlist
+     * @param bid
+     * @param result
+     * @param model
+     * @return
+     */
     @PostMapping("/bidList/validate")
     public String validate(@Valid BidList bid, BindingResult result, Model model) {
         logger.info("[POST] Accessing /Bidlist/validate");
@@ -48,6 +67,12 @@ public class BidListController {
         return "redirect:/bidList/list";
     }
 
+    /**
+     * Displays a page to update a bidlist
+     * @param id the bidListId in database
+     * @param model
+     * @return
+     */
     @GetMapping("/bidList/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         logger.info("[GET] Accessing /Bidlist/update/"+id);
@@ -59,6 +84,14 @@ public class BidListController {
         return "redirect:/bidList/list";
     }
 
+    /**
+     * Updates the bidlist in database if no error was found
+     * @param id the bidListId in database
+     * @param bidList
+     * @param result
+     * @param model
+     * @return
+     */
     @PostMapping("/bidList/update/{id}")
     public String updateBid(@PathVariable("id") Integer id, @Valid BidList bidList,
                              BindingResult result, Model model) {
@@ -76,6 +109,12 @@ public class BidListController {
         }
     }
 
+    /**
+     * Delete a bidlist
+     * @param id the bidListId in database
+     * @param model
+     * @return
+     */
     @GetMapping("/bidList/delete/{id}")
     public String deleteBid(@PathVariable("id") Integer id, Model model) {
         logger.info("[GET] Accessing /Bidlist/delete/"+id);
