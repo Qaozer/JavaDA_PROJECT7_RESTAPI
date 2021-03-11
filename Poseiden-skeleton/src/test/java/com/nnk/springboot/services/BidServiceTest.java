@@ -56,7 +56,7 @@ public class BidServiceTest {
         int id = bid.getBidListId();
 
         BidList nuBid = new BidList("Update Account", "Update Type",20d);
-        bid = bidListService.update(bid, nuBid);
+        bid = bidListService.update(nuBid, id);
 
         assertEquals(id, bid.getBidListId());
         assertEquals("Update Account", bid.getAccount());
