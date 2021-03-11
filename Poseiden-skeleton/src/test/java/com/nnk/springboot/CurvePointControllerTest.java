@@ -61,6 +61,7 @@ public class CurvePointControllerTest {
                 .param("curveId","90")
                 .param("term", "10.0")
                 .param("value", "10.0")
+                .with(csrf())
         ).andExpect(redirectedUrl("/curvePoint/list"));
     }
 
