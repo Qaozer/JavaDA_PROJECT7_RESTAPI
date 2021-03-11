@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController
 {
 	private static Logger logger = LoggerFactory.getLogger(HomeController.class);
+
+	/**
+	 * Home page
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/")
 	public String home(Model model)
 	{
@@ -18,6 +24,11 @@ public class HomeController
 		return "home";
 	}
 
+	/**
+	 * Admin home page
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/admin/home")
 	public String adminHome(Model model)
 	{
@@ -25,6 +36,11 @@ public class HomeController
 		return "redirect:/bidList/list";
 	}
 
+	/**
+	 * Forbidden access page
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/403")
 	public String accessDenied(Model model){
 		logger.info("[GET] Access Forbidden");
