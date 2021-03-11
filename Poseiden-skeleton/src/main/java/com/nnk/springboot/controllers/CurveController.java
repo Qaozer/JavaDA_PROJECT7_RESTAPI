@@ -22,6 +22,11 @@ public class CurveController {
 
     private static Logger logger = LoggerFactory.getLogger(CurveController.class);
 
+    /**
+     * Displays a list of curvePoints
+     * @param model
+     * @return
+     */
     @RequestMapping("/curvePoint/list")
     public String home(Model model)
     {
@@ -30,12 +35,24 @@ public class CurveController {
         return "curvePoint/list";
     }
 
+    /**
+     * Displays the page to add a curvePoint
+     * @param curvePoint
+     * @return
+     */
     @GetMapping("/curvePoint/add")
     public String addBidForm(CurvePoint curvePoint) {
         logger.info("[GET] Accessing /curvepoint/add");
         return "curvePoint/add";
     }
 
+    /**
+     * Validation of a newly created curvePoint
+     * @param curvePoint
+     * @param result
+     * @param model
+     * @return
+     */
     @PostMapping("/curvePoint/validate")
     public String validate(@Valid CurvePoint curvePoint, BindingResult result, Model model) {
         logger.info("[POST] Accessing /curvepoint/validate");
@@ -49,6 +66,12 @@ public class CurveController {
         return "curvePoint/add";
     }
 
+    /**
+     * Displays the page to update a curvePoint
+     * @param id the id of the curvePoint in database
+     * @param model
+     * @return
+     */
     @GetMapping("/curvePoint/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         logger.info("[GET] Accessing /curvepoint/update/"+id);
@@ -57,6 +80,14 @@ public class CurveController {
         return "curvePoint/update";
     }
 
+    /**
+     * Updates a curvepoint if no error was found
+     * @param id the id of the curvePoint in database
+     * @param curvePoint
+     * @param result
+     * @param model
+     * @return
+     */
     @PostMapping("/curvePoint/update/{id}")
     public String updateBid(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
                              BindingResult result, Model model) {
@@ -71,6 +102,12 @@ public class CurveController {
         return "curvePoint/update";
     }
 
+    /**
+     * Deletes a curvePoint from the database
+     * @param id the id of the curvePoint in database
+     * @param model
+     * @return
+     */
     @GetMapping("/curvePoint/delete/{id}")
     public String deleteBid(@PathVariable("id") Integer id, Model model) {
         logger.info("[GET] Accessing /curvepoint/delete/"+id);
