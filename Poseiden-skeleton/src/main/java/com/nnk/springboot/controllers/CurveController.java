@@ -94,7 +94,7 @@ public class CurveController {
         logger.info("[POST] Accessing /curvePoint/update/"+id);
         if(!result.hasErrors()){
             CurvePoint inDb = curveService.findById(id);
-            curveService.update(inDb, curvePoint);
+            curveService.update(curvePoint, id);
             logger.info("[POST] Curvepoint updated");
             return "redirect:/curvePoint/list";
         }

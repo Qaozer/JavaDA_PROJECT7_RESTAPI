@@ -99,7 +99,7 @@ public class BidListController {
         if(!result.hasErrors()){
             Optional<BidList> bid = bidListService.findById(id);
             if(bid.isPresent()){
-                bidListService.updateBid(bid.get(),bidList);
+                bidListService.update(bidList, id);
                 logger.info("[POST] Bidlist updated");
             }
             return "redirect:/bidList/list";

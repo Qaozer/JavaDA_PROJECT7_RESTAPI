@@ -44,14 +44,13 @@ public class CurveService {
 
     /**
      * Updates a curvePoint
-     * @param old the curvePoint in database
      * @param updated the curvePoint with updated infos
+     * @param id the curvePoint id int database
      * @return the curvePoint in database
      */
-    public CurvePoint update(CurvePoint old, CurvePoint updated){
-        old.setTerm(updated.getTerm());
-        old.setValue(updated.getValue());
-        return curvePointRepository.save(old);
+    public CurvePoint update(CurvePoint updated, int id){
+        updated.setId(id);
+        return curvePointRepository.save(updated);
     }
 
     /**

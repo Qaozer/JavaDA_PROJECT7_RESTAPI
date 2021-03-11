@@ -14,23 +14,47 @@ public class RatingService {
     @Autowired
     private RatingRepository ratingRepository;
 
+    /**
+     * Gets a list of ratings from the database
+     * @return a list of ratings
+     */
     @Transactional(readOnly=true)
     public List<Rating> findAll(){ return ratingRepository.findAll();}
 
+    /**
+     * Saves a rating in the database
+     * @param rating a rating
+     * @return the rating in database
+     */
     public Rating save(Rating rating){
         return ratingRepository.save(rating);
     }
 
+    /**
+     * Retrieves a rating from the database
+     * @param id the rating id
+     * @return the rating from the database or an exception if not found
+     */
     @Transactional(readOnly=true)
     public Rating findById(int id){
         return ratingRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid rating Id:" + id));
     }
 
-    public Rating update(Rating rating, int id){
-        rating.setId(id);
-        return ratingRepository.save(rating);
+    /**
+     * Updates a rating in database
+     * @param updated the updated rating
+     * @param id the rating id in database
+     * @return the rating in database
+     */
+    public Rating update(Rating updated, int id){
+        updated.setId(id);
+        return ratingRepository.save(updated);
     }
 
+    /**
+     * Deletes a rating
+     * @param id the rating id
+     */
     public void delete(int id){
         Rating rating = this.findById(id);
         ratingRepository.delete(rating);

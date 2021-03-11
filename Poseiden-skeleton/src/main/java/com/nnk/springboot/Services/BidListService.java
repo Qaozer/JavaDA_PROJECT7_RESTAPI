@@ -46,15 +46,13 @@ public class BidListService {
 
     /**
      * Updates a bidList in database
-     * @param bid the bidList in database
      * @param update the updated bidlist information
+     * @param id the bidListId in database
      * @return the bidList saved in database
      */
-    public BidList updateBid(BidList bid, BidList update){
-        bid.setAccount(update.getAccount());
-        bid.setType(update.getType());
-        bid.setBidQuantity(update.getBidQuantity());
-        return bidListRepository.save(bid);
+    public BidList update(BidList update, Integer id){
+        update.setBidListId(id);
+        return bidListRepository.save(update);
     }
 
     /**
