@@ -16,20 +16,40 @@ public class BidListService {
     @Autowired
     private BidListRepository bidListRepository;
 
+    /**
+     * Get the list of bidLists
+     * @return a list of bidLists
+     */
     @Transactional(readOnly=true)
     public List<BidList> findAll(){
         return bidListRepository.findAll();
     }
 
+    /**
+     * Get a bidList by its id
+     * @param id the bidListId in database
+     * @return an optional of a bidList
+     */
     @Transactional(readOnly=true)
     public Optional<BidList> findById(int id){
         return bidListRepository.findById(id);
     }
 
-    public BidList saveBid(BidList bid){
+    /**
+     * Saves a bidList in database
+     * @param bid the bidList to be saved
+     * @return the bidList
+     */
+    public BidList save(BidList bid){
         return bidListRepository.save(bid);
     }
 
+    /**
+     * Updates a bidList in database
+     * @param bid the bidList in database
+     * @param update the updated bidlist information
+     * @return the bidList saved in database
+     */
     public BidList updateBid(BidList bid, BidList update){
         bid.setAccount(update.getAccount());
         bid.setType(update.getType());
@@ -37,6 +57,10 @@ public class BidListService {
         return bidListRepository.save(bid);
     }
 
+    /**
+     * Deletes a bidList
+     * @param id the bidListId
+     */
     public void deleteById(int id){
         bidListRepository.deleteById(id);
     }

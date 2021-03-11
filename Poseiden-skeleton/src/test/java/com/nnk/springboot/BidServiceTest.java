@@ -23,7 +23,7 @@ public class BidServiceTest {
     public void saveBidTest(){
         BidList  bid = new BidList("Account Test", "Type Test", 10d);
 
-        bid = bidListService.saveBid(bid);
+        bid = bidListService.save(bid);
         int id = bid.getBidListId();
         assertNotNull(bid.getBidListId());
         BidList inDb = bidListService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid bid Id:" + id));
@@ -34,7 +34,7 @@ public class BidServiceTest {
     public void findByIdTest(){
         BidList  bid = new BidList("Account Test", "Type Test", 10d);
 
-        bid = bidListService.saveBid(bid);
+        bid = bidListService.save(bid);
         assertTrue(bidListService.findById(bid.getBidListId()).isPresent());
     }
 
@@ -44,14 +44,14 @@ public class BidServiceTest {
 
         BidList  bid = new BidList("Account Test", "Type Test", 10d);
 
-        bid = bidListService.saveBid(bid);
+        bid = bidListService.save(bid);
         assertEquals(count + 1, bidListService.findAll().size());
     }
 
     @Test
     public void updateBidTest(){
         BidList  bid = new BidList("Account Test", "Type Test", 10d);
-        bid = bidListService.saveBid(bid);
+        bid = bidListService.save(bid);
 
         int id = bid.getBidListId();
 
@@ -68,7 +68,7 @@ public class BidServiceTest {
     public void deleteBidTest(){
         int count = bidListService.findAll().size();
         BidList  bid = new BidList("Account Test", "Type Test", 10d);
-        bid = bidListService.saveBid(bid);
+        bid = bidListService.save(bid);
 
         assertEquals(count + 1, bidListService.findAll().size());
 

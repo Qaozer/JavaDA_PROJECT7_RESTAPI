@@ -61,7 +61,7 @@ public class BidListController {
             logger.info("[POST] Bidlist not saved, form contains errors : " + result.getAllErrors().toString());
             return "/bidList/add";
         }
-        bidListService.saveBid(bid);
+        bidListService.save(bid);
         model.addAttribute("bids", bidListService.findAll());
         logger.info("[POST] Bidlist saved");
         return "redirect:/bidList/list";
