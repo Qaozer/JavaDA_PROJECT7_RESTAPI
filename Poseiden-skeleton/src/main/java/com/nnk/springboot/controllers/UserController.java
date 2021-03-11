@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -58,7 +59,7 @@ public class UserController {
     public String validate(@Valid User user, BindingResult result, Model model) {
         logger.info("[POST] Accessing /user/validate");
         if (!result.hasErrors()) {
-            userService.add(user);
+            userService.save(user);
             model.addAttribute("users", userService.findAll());
             logger.info("[POST] User saved");
             return "redirect:/user/list";
@@ -114,9 +115,14 @@ public class UserController {
     @GetMapping("/user/delete/{id}")
     public String deleteUser(@PathVariable("id") Integer id, Model model) {
         logger.info("[GET] Accessing /user/delete/"+id);
-        userService.delete(id);
+        Optional<User> user = userService.findById(id);
+        if (user.isPresent()){
+            userService.delete(id);
+            logger.info("[DEL] User deleted");
+        } else {
+            logger.info("[GET] Invalid user id");
+        }
         model.addAttribute("users", userService.findAll());
-        logger.info("[DEL] User deleted");
         return "redirect:/user/list";
     }
 }

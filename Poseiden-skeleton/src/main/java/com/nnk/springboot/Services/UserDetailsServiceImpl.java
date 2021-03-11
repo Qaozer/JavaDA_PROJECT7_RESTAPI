@@ -26,12 +26,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         Optional<User> opt = this.userRepository.findByUsername(userName);
         if (opt.isEmpty()){
-            //System.out.println("User not found! " + userName);
             throw new UsernameNotFoundException("User " + userName + " was not found in the database");
         }
         User user = opt.get();
-
-        System.out.println("Found User: " + user);
 
         // [USER, ADMIN,..]
         String role = user.getRole();

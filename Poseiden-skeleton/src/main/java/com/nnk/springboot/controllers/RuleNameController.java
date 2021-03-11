@@ -112,7 +112,13 @@ public class RuleNameController {
     @GetMapping("/ruleName/delete/{id}")
     public String deleteRuleName(@PathVariable("id") Integer id, Model model) {
         logger.info("[GET] Accessing /ruleName/delete/"+id);
-        ruleNameService.delete(id);
+        try{
+            ruleNameService.findById(id);
+            ruleNameService.delete(id);
+            logger.info("[DEL] ruleName deleted");
+        } catch (Exception e) {
+            logger.info("[DEL] Invalid ruleName id");
+        }
         model.addAttribute("ruleNames", ruleNameService.findAll());
         logger.info("[DEL] Rulename deleted");
         return "redirect:/ruleName/list";

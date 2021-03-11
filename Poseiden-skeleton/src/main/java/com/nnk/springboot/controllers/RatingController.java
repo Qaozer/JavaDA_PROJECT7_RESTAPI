@@ -112,9 +112,14 @@ public class RatingController {
     @GetMapping("/rating/delete/{id}")
     public String deleteRating(@PathVariable("id") Integer id, Model model) {
         logger.info("[GET] Accessing /rating/delete/"+id);
-        ratingService.delete(id);
+        try{
+            ratingService.findById(id);
+            ratingService.delete(id);
+            logger.info("[DEL] Rating deleted");
+        } catch (Exception e) {
+            logger.info("[DEL] Invalid Rating id");
+        }
         model.addAttribute("ratings", ratingService.findAll());
-        logger.info("[DEL] Rating deleted");
         return "redirect:/rating/list";
     }
 }

@@ -15,7 +15,7 @@ public class RatingService {
     private RatingRepository ratingRepository;
 
     /**
-     * Gets a list of ratings from the database
+     * Gets a list of all ratings from the database
      * @return a list of ratings
      */
     @Transactional(readOnly=true)

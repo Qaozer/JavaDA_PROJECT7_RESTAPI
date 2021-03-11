@@ -15,7 +15,7 @@ public class TradeService {
     private TradeRepository tradeRepository;
 
     /**
-     * Retrieves a list of Trades from database
+     * Retrieves a list of all Trades from database
      * @return a list of Trades
      */
     @Transactional(readOnly=true)

@@ -15,7 +15,7 @@ public class CurveService {
     private CurvePointRepository curvePointRepository;
 
     /**
-     * Gets a list of curvePoints from the database
+     * Gets a list of all curvePoints from the database
      * @return a list of curvePoints
      */
     @Transactional(readOnly=true)

@@ -123,8 +123,9 @@ public class BidListController {
             bidListService.deleteById(id);
             logger.info("[DEL] Bidlist deleted");
         } else {
-            logger.info("[GET] Invalid bidlist id");
+            logger.info("[DEL] Invalid bidlist id");
         }
+        model.addAttribute("bids", bidListService.findAll());
         return "redirect:/bidList/list";
     }
 }

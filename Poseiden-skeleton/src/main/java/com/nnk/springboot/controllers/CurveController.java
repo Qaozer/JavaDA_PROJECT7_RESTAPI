@@ -111,8 +111,14 @@ public class CurveController {
     @GetMapping("/curvePoint/delete/{id}")
     public String deleteBid(@PathVariable("id") Integer id, Model model) {
         logger.info("[GET] Accessing /curvepoint/delete/"+id);
-        curveService.delete(id);
-        logger.info("[DEL] Curvepoint deleted");
+        try{
+            curveService.findById(id);
+            curveService.delete(id);
+            logger.info("[DEL] Curvepoint deleted");
+        } catch (Exception e) {
+            logger.info("[DEL] Invalid Curvepoint id");
+        }
+        model.addAttribute("curvePoints", curveService.findAll());
         return "redirect:/curvePoint/list";
     }
 }

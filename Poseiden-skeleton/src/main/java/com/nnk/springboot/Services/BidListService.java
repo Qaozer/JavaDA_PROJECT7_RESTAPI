@@ -17,7 +17,7 @@ public class BidListService {
     private BidListRepository bidListRepository;
 
     /**
-     * Get the list of bidLists
+     * Retrieves the list of all bidLists from the database
      * @return a list of bidLists
      */
     @Transactional(readOnly=true)
@@ -26,7 +26,7 @@ public class BidListService {
     }
 
     /**
-     * Get a bidList by its id
+     * Retrieves a bidList by its id
      * @param id the bidListId in database
      * @return an optional of a bidList
      */

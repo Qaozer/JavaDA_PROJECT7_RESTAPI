@@ -15,7 +15,7 @@ public class RuleNameService {
     private RuleNameRepository ruleNameRepository;
 
     /**
-     * Retrieves a list of RuleNames from the database
+     * Retrieves a list of all RuleNames from the database
      * @return a list of RuleNames
      */
     @Transactional(readOnly=true)

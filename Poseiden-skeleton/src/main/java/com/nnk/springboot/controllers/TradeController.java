@@ -112,9 +112,14 @@ public class TradeController {
     @GetMapping("/trade/delete/{id}")
     public String deleteTrade(@PathVariable("id") Integer id, Model model) {
         logger.info("[GET] Accessing /trade/delete/"+id);
-        tradeService.delete(id);
+        try{
+            tradeService.findById(id);
+            tradeService.delete(id);
+            logger.info("[DEL] Trade deleted");
+        } catch (Exception e) {
+            logger.info("[DEL] Invalid Trade id");
+        }
         model.addAttribute("trades", tradeService.findAll());
-        logger.info("[DEL] Trade deleted");
         return "redirect:/trade/list";
     }
 }
