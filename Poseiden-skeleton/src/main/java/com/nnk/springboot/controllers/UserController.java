@@ -1,6 +1,7 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.Services.UserService;
+import com.nnk.springboot.UserDto;
 import com.nnk.springboot.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,13 +54,13 @@ public class UserController {
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         logger.info("[GET] Accessing /user/update/"+id);
         User user = userService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid User Id:" + id));
-        user.setPassword("");
-        model.addAttribute("user", user);
+        UserDto userDto = new UserDto(user.getId(), "",user.getFullname(), user.getRole());
+        model.addAttribute("userDto", userDto);
         return "user/update";
     }
 
     @PostMapping("/user/update/{id}")
-    public String updateUser(@PathVariable("id") Integer id, @Valid User user,
+    public String updateUser(@PathVariable("id") Integer id, @Valid UserDto user,
                              BindingResult result, Model model) {
         logger.info("[POST] Accessing /user/update/"+id);
         if (result.hasErrors()) {

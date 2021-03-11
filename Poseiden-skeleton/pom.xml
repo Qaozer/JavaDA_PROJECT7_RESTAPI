@@ -6,7 +6,7 @@
 
 	<groupId>net.guides.springboothelloworld</groupId>
 	<artifactId>spring-boot-skeleton</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1-ControllerTests-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>spring-boot-skeleton</name>
@@ -112,9 +112,13 @@
 			<artifactId>log4j-core</artifactId>
 			<version>2.14.0</version>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+        </dependency>
 
 
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>

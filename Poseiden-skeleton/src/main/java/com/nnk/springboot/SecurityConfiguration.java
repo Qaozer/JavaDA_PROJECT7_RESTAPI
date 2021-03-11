@@ -23,7 +23,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/", "/login", "/user/list").permitAll();
 
         // If no login, it will redirect to /login page.
-        http.authorizeRequests().antMatchers("/admin/home","/bidList/**","/curvePoint/**", "/trade/**","/rating/**","ruleName/**").hasAuthority("ADMIN");
+        http.authorizeRequests().antMatchers("/admin/home","/bidList/**","/curvePoint/**", "/trade/**","/rating/**","/ruleName/**", "/user/update/**").hasAuthority("ADMIN");
 
         // When the user has logged in as XX.
         // But access a page that requires role YY,

@@ -1,5 +1,6 @@
 package com.nnk.springboot.Services;
 
+import com.nnk.springboot.UserDto;
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +38,13 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-    public User update(User user, int id){
+    public User update(UserDto user, int id){
+        User inDb = userRepository.getOne(id);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode(user.getPassword()));
-        user.setId(id);
-        return userRepository.save(user);
+        inDb.setFullname(user.getFullname());
+        inDb.setPassword(encoder.encode(user.getPassword()));
+        inDb.setRole(user.getRole());
+        return userRepository.save(inDb);
     }
 
     public void delete(int id){

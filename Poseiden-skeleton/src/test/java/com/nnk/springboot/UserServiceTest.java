@@ -52,9 +52,10 @@ public class UserServiceTest {
     @Test
     public void updateUserTest(){
         User user = new User(username, fullname, password, role);
-        User nuUser = new User(username, "Nom", "motdepasse", role);
 
         user = userService.add(user);
+        UserDto nuUser = new UserDto(user.getId(), "motdepasse", "Nom", user.getRole());
+
         user = userService.update(nuUser, user.getId());
 
         User inDb = userService.findById(user.getId()).get();
