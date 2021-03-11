@@ -22,6 +22,11 @@ public class TradeController {
 
     private static Logger logger = LoggerFactory.getLogger(TradeController.class);
 
+    /**
+     * Displays a list of trades
+     * @param model
+     * @return
+     */
     @RequestMapping("/trade/list")
     public String home(Model model)
     {
@@ -30,12 +35,24 @@ public class TradeController {
         return "trade/list";
     }
 
+    /**
+     * Display the page to add a trade
+     * @param trade
+     * @return
+     */
     @GetMapping("/trade/add")
     public String addTradeForm(Trade trade) {
         logger.info("[GET] Accessing /trade/add");
         return "trade/add";
     }
 
+    /**
+     * Validates a trade before saving it in database
+     * @param trade
+     * @param result
+     * @param model
+     * @return
+     */
     @PostMapping("/trade/validate")
     public String validate(@Valid Trade trade, BindingResult result, Model model) {
         logger.info("[POST] Accessing /trade/validate");
@@ -49,6 +66,12 @@ public class TradeController {
         return "trade/add";
     }
 
+    /**
+     * Displays the page to update a trade
+     * @param id the trade id
+     * @param model
+     * @return
+     */
     @GetMapping("/trade/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         logger.info("[GET] Accessing /trade/update/"+id);
@@ -57,6 +80,14 @@ public class TradeController {
         return "trade/update";
     }
 
+    /**
+     * Updates the trade if no error was found
+     * @param id the trade id
+     * @param trade
+     * @param result
+     * @param model
+     * @return
+     */
     @PostMapping("/trade/update/{id}")
     public String updateTrade(@PathVariable("id") Integer id, @Valid Trade trade,
                                BindingResult result, Model model) {
@@ -72,6 +103,12 @@ public class TradeController {
         return "redirect:/trade/list";
     }
 
+    /**
+     * Deletes a trade
+     * @param id the trade id
+     * @param model
+     * @return
+     */
     @GetMapping("/trade/delete/{id}")
     public String deleteTrade(@PathVariable("id") Integer id, Model model) {
         logger.info("[GET] Accessing /trade/delete/"+id);
